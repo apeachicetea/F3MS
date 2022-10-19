@@ -87,22 +87,13 @@ const RegisterModals = () => {
     // } else {
     // }
     try {
-      await axios.post(
-        `${process.env.REACT_APP_URL}/admin/management/number`,
-        {
-          number: number.number_id,
-          startDate: number.start_date,
-          endDate: number.end_date,
-          comment: number.comment,
-          closed: number.is_closed,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
-      );
+      await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
+        number_name: number.number_id,
+        start_date: number.start_date,
+        end_date: number.end_date,
+        comment: number.comment,
+      });
       setLoading(false);
-      // console.log(number);
     } catch (err) {
       console.log(err);
     }

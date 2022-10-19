@@ -73,17 +73,15 @@ const UpdateModals = () => {
 
   const onSubmit = async () => {
     try {
-      await axios
-        .patch(`${process.env.REACT_APP_URL}/admin/management/number`, {
-          number_id: newNumber.new_number_id,
+      await axios.put(
+        `${process.env.REACT_APP_URL}/admin/management/number/${newNumber.new_number_id}`,
+        {
           start_date: newNumber.new_start_date,
           end_date: newNumber.new_end_date,
           comment: newNumber.new_comment,
           is_closed: newNumber.new_is_closed,
-        })
-        .then((res) => {
-          console.log(res.json);
-        });
+        }
+      );
     } catch (err) {
       console.log(err);
     }
