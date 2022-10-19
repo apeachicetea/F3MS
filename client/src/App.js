@@ -7,6 +7,7 @@ import Admin from 'pages/Admin';
 import ReadNumber from 'pages/numberPage/Read';
 import ReadTeam from 'pages/teamPage/Read';
 import ReadMember from 'pages/memberPage/Read';
+import PreteamRead from 'pages/teamPage/PreteamRead';
 
 import TeamIssue from 'pages/IssuePage/TeamIssue';
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/admin/management/number/detail' element={<ReadTeam />} />
         {/* <Route path='/admin/management/team' element={<ReadTeam />} /> */}
         <Route path='/admin/management/member' element={<ReadMember />} />
+        <Route path='/admin/management/pre-team' element={<PreteamRead />} />
         <Route path='/admin/management/issue/team' element={<TeamIssue />} />
       </Routes>
     </BrowserRouter>

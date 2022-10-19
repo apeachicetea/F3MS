@@ -6,6 +6,8 @@ import UpdateModals from 'components/Modal/member/UpdateModals';
 import DeleteModals from 'components/Modal/member/DeleteModals';
 import { Box, Stack, Button } from '@mui/material';
 import styled from 'styled-components';
+import axios from 'axios';
+import { nanoid } from 'nanoid';
 
 import {
   TableContainer,
@@ -107,10 +109,10 @@ const ReadMember = () => {
   // 전체 멤버 데이터 조회 시
   useEffect(() => {
     const getMember = async () => {
-      let json = await fetch(
+      let response = await axios(
         `${process.env.REACT_APP_URL}/admin/management/member`
-      ).json();
-      setMember(json.data);
+      );
+      setMember(response.data);
     };
     getMember();
   }, []);
@@ -155,7 +157,7 @@ const ReadMember = () => {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
                     <Link to='/admin/management/issue/member'>
                       {row.member_name}
