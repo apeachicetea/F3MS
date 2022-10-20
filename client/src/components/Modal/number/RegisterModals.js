@@ -42,7 +42,7 @@ const number_data = [
 ];
 
 // // 기수 이름은 seb_은 지정된 값. 숫자는 마지막 숫자 +1로 자동으로 추가되도록(=> number_name)?
-const RegisterModals = () => {
+const RegisterModals = ({ setModalOpen }) => {
   const [number, setNumber] = useState([]);
   // 기수 선택 드롭다운 상태 관리
   const [selectedDropValue, setSelectedDropValue] =
@@ -52,14 +52,22 @@ const RegisterModals = () => {
   // const [closedError, setIsClosedError] = useState(false);
   const [inputStatus, setInputStatus] = useState('');
   // console.log({ inputStatus });
+  const [numberName, setNumberName] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
 
   // 기수 선택을 위한 드롭다운
-  const handleDropNumber = (e) => {
+  const handleNumber = (e) => {
     const { value } = e.target;
-    setSelectedDropValue(number_data.filter((el) => el.value === value)[0].id);
+    // setSelectedDropValue(number_data.filter((el) => el.value === value)[0].id);
+    setNumberName(value);
+  };
+
+  const handleComment = (e) => {
+    const { value } = e.target;
+    setComment(value);
   };
 
   // 기수 종료 여부를 위한 라디오버튼
@@ -86,14 +94,18 @@ const RegisterModals = () => {
     //   alert('기수 종료 여부를 선택해주세요');
     // } else {
     // }
+    console.log(numberName, startDate, endDate, comment);
     try {
       await axios.post(`${process.env.REACT_APP_URL}/admin/management/number`, {
-        number_name: number.number_id,
-        start_date: number.start_date,
-        end_date: number.end_date,
-        comment: number.comment,
+        number_name: numberName,
+        start_date: startDate,
+        end_date: endDate,
+        comment: comment,
       });
       setLoading(false);
+      setModalOpen(false);
+      setNumberName('');
+      setComment('');
     } catch (err) {
       console.log(err);
     }
@@ -103,7 +115,8 @@ const RegisterModals = () => {
     <>
       {loading ? <Loading /> : null}
       <h4>기수(필수 입력)</h4>
-      <Autocomplete
+      <input value={numberName} onChange={handleNumber}></input>
+      {/* <Autocomplete
         id='combo-box-demo'
         options={number_data}
         sx={{ width: 300 }}
@@ -111,10 +124,11 @@ const RegisterModals = () => {
           <TextField
             {...params}
             label='기수를 선택하세요'
+            value={numberName}
             onChange={handleDropNumber}
           />
         )}
-      />
+      /> */}
       <h4>프로젝트 기간(필수 선택)</h4>
       <div>프로젝트 진행 기간을 선택해주세요</div>
       <br />
@@ -141,7 +155,12 @@ const RegisterModals = () => {
         minDate={startDate}
       />
       <h4>기타 코멘트(선택사항)</h4>
-      <TextField id='standard-basic' label='특이사항 작성' variant='standard' />
+      <TextField
+        id='standard-basic'
+        label='특이사항 작성'
+        variant='standard'
+        onChange={handleComment}
+      />
       <br />
       <FormControl>
         <FormLabel id='number-row-radio-buttons-group-label'>
@@ -156,13 +175,13 @@ const RegisterModals = () => {
         >
           <FormControlLabel
             control={<Radio />}
-            value='종료'
+            value={true}
             label='종료'
             onChange={handleInputValue}
           />
           <FormControlLabel
             control={<Radio />}
-            value='종료 X'
+            value={false}
             label='종료 X'
             onChange={handleInputValue}
           />

@@ -128,26 +128,13 @@ const ReadNumber = () => {
   useEffect(() => {
     const getNumber = async () => {
       const response = await axios(
-        `http://localhost:8080/admin/management/number`
+        `${process.env.REACT_APP_URL}/admin/management/number`
       );
       setNumber(response.data);
-      console.log(response.data);
+      setRows(response.data);
     };
     getNumber();
   }, []);
-
-  // 기수 수정
-  const EditNumber = async () => {
-    await axios.put(`http://localhost:8080/admin/management/number/${1}`, {
-      number_name: '39',
-      start_date: '2022-01-01',
-      end_date: '2022-01-02',
-      comment: '화이팅',
-    });
-    setModalOpen(false);
-  };
-
-  // 기수 삭제
 
   // 기수 진행 여부 체크박스 표시를 위한 이벤트(handleChecked, removeCheck)
   const handleChecked = (checked, id) => {
@@ -224,9 +211,9 @@ const ReadNumber = () => {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={nanoid()}>
                   <TableCell component='th' scope='row'>
-                    <Link to='/admin/management/number/detail'>{row.name}</Link>
+                    <Link to='/admin/management/number/detail'>{`SEB_${row.number_name}`}</Link>
                   </TableCell>
                   <TableCell align='right'>{row.start_date}</TableCell>
                   <TableCell align='right'>{row.end_date}</TableCell>
@@ -268,7 +255,7 @@ const ReadNumber = () => {
                       &times;
                     </div>
                     <div className='desc'>
-                      <RegisterModals />
+                      <RegisterModals setModalOpen={setModalOpen} />
                     </div>
                   </ModalView>
                 </ModalBackdrop>
@@ -291,7 +278,7 @@ const ReadNumber = () => {
                       &times;
                     </div>
                     <div className='desc'>
-                      <UpdateModals />
+                      <UpdateModals setModalOpen={setModalOpen} />
                     </div>
                   </ModalView>
                 </ModalBackdrop>
